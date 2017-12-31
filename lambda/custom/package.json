@@ -1,0 +1,11 @@
+{
+    "name": "alexa-skill-nodejs-voice-mail",
+    "version": "1.0.0",
+    "description": "音声メールのロジックです。",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "alexa-sdk": "^1.0.0"
+    }
+}
