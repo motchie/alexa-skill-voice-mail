@@ -11,21 +11,12 @@ var handlers = {
     'LaunchRequest': function() {
         this.emit('音声メールへようこそ。');
     },
-    'HelloWorldIntent': function() {
-        this.emit('SayHello');
+    'UnReadMailIntent': function() {
+        this.emit('UnReadMail');
     },
-    'MyNameIsIntent': function() {
-        this.emit('SayHelloName');
-    },
-    'SayHello': function() {
-        this.response.speak('Hello World!')
+    'UnReadMail': function() {
+        this.response.speak('未読メールをチェックします。')
             .cardRenderer('hello world', 'hello world');
-        this.emit(':responseReady');
-    },
-    'SayHelloName': function() {
-        var name = this.event.request.intent.slots.name.value;
-        this.response.speak('Hello ' + name)
-            .cardRenderer('hello world', 'hello ' + name);
         this.emit(':responseReady');
     },
     'SessionEndedRequest': function() {

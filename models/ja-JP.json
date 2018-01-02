@@ -16,14 +16,21 @@
                     "samples": []
                 },
                 {
-                    "name": "HelloWorldIntent",
+                    "name": "UnReadMailIntent",
                     "slots": [
 
                     ],
                     "samples": [
-                        "hello",
-                        "say hello",
-                        "say hello world"
+                        "未読",
+                        "未読メール",
+                        "未読メールを読む",
+                        "新着",
+                        "新着メール",
+                        "新着メールを読む",
+                        "来てるメール",
+                        "来てるメールを読む",
+                        "メールは来てる",
+                        "メールは来ている"
                     ]
                 }
             ]
