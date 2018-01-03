@@ -15,6 +15,8 @@ var handlers = {
         this.emit('UnReadMail');
     },
     'UnReadMail': function() {
+        let accessToken = this.event.session.user.accessToken;
+        console.log(accessToken);
         this.response.speak('未読メールをチェックします。')
             .cardRenderer('hello world', 'hello world');
         this.emit(':responseReady');
