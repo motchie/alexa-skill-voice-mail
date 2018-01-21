@@ -4,6 +4,10 @@
             "invocationName": "音声メール",
             "types": [],
             "intents": [{
+                    "name": "AMAZON.YesIntent",
+                    "samples": []
+                },
+                {
                     "name": "AMAZON.CancelIntent",
                     "samples": [
                         "終了",

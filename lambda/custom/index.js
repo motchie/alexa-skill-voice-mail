@@ -1,5 +1,7 @@
 'use strict';
 var Alexa = require("alexa-sdk");
+var Speech = require('ssml-builder');
+var moment = require('moment-timezone');
 var languageStrings = require("./lang/languageStrings");
 var accessToken;
 var client = require("./lib/office365-rest-api-client");
@@ -29,8 +31,10 @@ var handlers = {
             .then(
                 (value) => {
                     this.unReadMailCount = value;
+
                     if (Number(this.unReadMailCount) > 0) {
-                        this.emit(':tell', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.unReadMailCount));
+                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.unReadMailCount));
+                        this.attributes["mode"] = "read_unread_mail";
                     } else {
                         this.emit(':tell', this.t("WELCOME_TO_VOICEMAIL") + this.t("NO_UNREAD_MAIL"));
                     }
@@ -62,6 +66,31 @@ var handlers = {
                 (error) => { console.log(error); }
             );
     },
+    'AMAZON.YesIntent': function() {
+        var mode = this.attributes['mode'];
+
+        if (mode == "read_unread_mail") {
+            client.UnReadMails()
+                .then(
+                    (value) => {
+                        const mails = [];
+                        let count = 0;
+                        for (let mail of value) {
+                            let mailresponse = buildMailResponse(++count, mail);
+                            mails.push(mailresponse);
+                        }
+                        this.response.speak(mails.join(""));
+                        this.emit(':responseReady');
+                    }
+                )
+                .catch(
+                    (error) => { console.log(error); }
+                );
+        } else {
+            this.response.speak('other mode');
+            this.emit(':responseReady');
+        }
+    },
     'SessionEndedRequest': function() {
         console.log('Session ended with reason: ' + this.event.request.reason);
     },
@@ -83,3 +112,17 @@ var handlers = {
             " or 'alexa, ask hello world my name is awesome Aaron'");
     }
 };
+
+function buildMailResponse(count, mail) {
+    let speech = new Speech();
+    speech.say(`${count}件目。`);
+    let receivedDate = new Date(mail.received);
+    speech.say(`${moment(receivedDate).format("M月D日 hh時mm分")} に受信。`);
+    speech.pause('1s');
+    speech.say(`件名は「${mail.subject}」で、`);
+    speech.say(`本文は「${mail.body}」です。`);
+    speech.pause('1s');
+    var response = speech.ssml(true);
+
+    return response;
+}

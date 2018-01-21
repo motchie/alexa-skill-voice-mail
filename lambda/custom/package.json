@@ -1,12 +1,14 @@
 {
-    "name": "alexa-skill-nodejs-voice-mail",
-    "version": "1.0.0",
-    "description": "音声メールのロジックです。",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "dependencies": {
-        "alexa-sdk": "^1.0.0",
-        "@microsoft/microsoft-graph-client": "^1.0.0"
-    }
+  "name": "alexa-skill-nodejs-voice-mail",
+  "version": "1.0.0",
+  "description": "音声メールのロジックです。",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@microsoft/microsoft-graph-client": "^1.0.0",
+    "alexa-sdk": "^1.0.0",
+    "moment-timezone": "^0.5.14",
+    "ssml-builder": "^0.4.1"
+  }
 }
