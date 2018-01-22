@@ -7,6 +7,9 @@ const languageStrings = {
             'NO_UNREAD_MAIL': '未読メールはありません。',
             'CANCEL': 'キャンセルしました',
             'MAIL_NO': '件目。',
+            'HELP': '未読メールを音声で聞くことができます。',
+            'Bye': 'さようなら。',
+            'unhandled': 'すみません、処理できない内容でした。',
         }
     }
 };
