@@ -57,8 +57,13 @@ var handlers = {
             .then(
                 (value) => {
                     this.unReadMailCount = value;
-                    this.response.speak(this.t("THERE_ARE_UNREAD_MAILS", this.unReadMailCount))
-                        .cardRenderer('未読メールは', this.unReadMailCount + '通です。');
+
+                    if (Number(this.unReadMailCount) > 0) {
+                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.unReadMailCount));
+                        this.attributes["mode"] = "read_unread_mail";
+                    } else {
+                        this.emit(':tell', this.t("WELCOME_TO_VOICEMAIL") + this.t("NO_UNREAD_MAIL"));
+                    }
                     this.emit(':responseReady');
                 }
             )
