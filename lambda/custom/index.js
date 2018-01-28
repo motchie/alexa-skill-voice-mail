@@ -5,7 +5,7 @@ var moment = require('moment-timezone');
 var languageStrings = require("./lang/languageStrings");
 var accessToken;
 var client = require("./lib/office365-rest-api-client");
-var countUnreadMails;
+var UnreadMailsCount;
 
 exports.handler = function(event, context) {
     var alexa = Alexa.handler(event, context);
@@ -30,10 +30,10 @@ var handlers = {
         client.countUnreadMails()
             .then(
                 (value) => {
-                    this.countUnreadMails = value;
+                    this.UnreadMailsCount = value;
 
-                    if (Number(this.countUnreadMails) > 0) {
-                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.countUnreadMails));
+                    if (Number(this.UnreadMailsCount) > 0) {
+                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.UnreadMailsCount));
                         this.attributes["mode"] = "read_unread_mail";
                     } else {
                         this.emit(':tell', this.t("WELCOME_TO_VOICEMAIL") + this.t("NO_UNREAD_MAIL"));
@@ -56,10 +56,10 @@ var handlers = {
         client.countUnreadMails()
             .then(
                 (value) => {
-                    this.countUnreadMails = value;
+                    this.UnreadMailsCount = value;
 
-                    if (Number(this.countUnreadMails) > 0) {
-                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.countUnreadMails));
+                    if (Number(this.UnreadMailsCount) > 0) {
+                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.UnreadMailsCount));
                         this.attributes["mode"] = "read_unread_mail";
                     } else {
                         this.emit(':tell', this.t("WELCOME_TO_VOICEMAIL") + this.t("NO_UNREAD_MAIL"));
