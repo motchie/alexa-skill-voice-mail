@@ -12,7 +12,7 @@ function setAccessToken(token) {
 
 }
 
-function unReadMailCount() {
+function countUnreadMails() {
     return new Promise(
         (resolve, reject) => {
             client
@@ -69,5 +69,5 @@ function processingEMails(rawEmails) {
 }
 
 module.exports.setAccessToken = setAccessToken;
-module.exports.unReadMailCount = unReadMailCount;
+module.exports.countUnreadMails = countUnreadMails;
 module.exports.UnReadMails = UnReadMails;

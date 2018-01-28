@@ -5,7 +5,7 @@ var moment = require('moment-timezone');
 var languageStrings = require("./lang/languageStrings");
 var accessToken;
 var client = require("./lib/office365-rest-api-client");
-var unReadMailCount;
+var countUnreadMails;
 
 exports.handler = function(event, context) {
     var alexa = Alexa.handler(event, context);
@@ -27,13 +27,13 @@ var handlers = {
             this.emit(':tellWithLinkAccountCard', this.t("PLEASE_LINK_ACCOUNT"));
         }
 
-        client.unReadMailCount()
+        client.countUnreadMails()
             .then(
                 (value) => {
-                    this.unReadMailCount = value;
+                    this.countUnreadMails = value;
 
-                    if (Number(this.unReadMailCount) > 0) {
-                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.unReadMailCount));
+                    if (Number(this.countUnreadMails) > 0) {
+                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.countUnreadMails));
                         this.attributes["mode"] = "read_unread_mail";
                     } else {
                         this.emit(':tell', this.t("WELCOME_TO_VOICEMAIL") + this.t("NO_UNREAD_MAIL"));
@@ -53,13 +53,13 @@ var handlers = {
             this.emit(':tellWithLinkAccountCard', this.t("PLEASE_LINK_ACCOUNT"));
         }
 
-        client.unReadMailCount()
+        client.countUnreadMails()
             .then(
                 (value) => {
-                    this.unReadMailCount = value;
+                    this.countUnreadMails = value;
 
-                    if (Number(this.unReadMailCount) > 0) {
-                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.unReadMailCount));
+                    if (Number(this.countUnreadMails) > 0) {
+                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.countUnreadMails));
                         this.attributes["mode"] = "read_unread_mail";
                     } else {
                         this.emit(':tell', this.t("WELCOME_TO_VOICEMAIL") + this.t("NO_UNREAD_MAIL"));
