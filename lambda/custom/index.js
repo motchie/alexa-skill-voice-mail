@@ -34,11 +34,10 @@ var handlers = {
 
                     if (Number(this.UnreadMailsCount) > 0) {
                         this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.UnreadMailsCount));
-                        this.attributes["mode"] = "read_unread_mail";
+                        // this.attributes["mode"] = "read_unread_mail";
                     } else {
-                        this.emit(':tell', this.t("WELCOME_TO_VOICEMAIL") + this.t("NO_UNREAD_MAIL"));
+                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("NO_UNREAD_MAIL"));
                     }
-                    this.emit(':responseReady');
                 }
             )
             .catch(
@@ -53,18 +52,16 @@ var handlers = {
             this.emit(':tellWithLinkAccountCard', this.t("PLEASE_LINK_ACCOUNT"));
         }
 
-        client.countUnreadMails()
+        client.UnReadMails()
             .then(
                 (value) => {
-                    this.UnreadMailsCount = value;
-
-                    if (Number(this.UnreadMailsCount) > 0) {
-                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.UnreadMailsCount));
-                        this.attributes["mode"] = "read_unread_mail";
-                    } else {
-                        this.emit(':tell', this.t("WELCOME_TO_VOICEMAIL") + this.t("NO_UNREAD_MAIL"));
+                    const mails = [];
+                    let count = 0;
+                    for (let mail of value) {
+                        let mailresponse = buildMailResponse(++count, mail);
+                        mails.push(mailresponse);
                     }
-                    this.emit(':responseReady');
+                    this.emit(':ask', mails.join(''));
                 }
             )
             .catch(
@@ -104,8 +101,7 @@ var handlers = {
         this.emit(':responseReady');
     },
     'AMAZON.HelpIntent': function() {
-        this.response.speak('HELP');
-        this.emit(':responseReady');
+        this.emit(':ask', this.t('HELP'))
     },
     'AMAZON.CancelIntent': function() {
         this.response.speak(this.t('Bye'));
@@ -123,7 +119,7 @@ function buildMailResponse(count, mail) {
     speech.say(`${moment(receivedDate).format("M月D日 hh時mm分")} に受信。`);
     speech.pause('1s');
     speech.say(`件名は「${mail.subject}」で、`);
-    speech.say(`本文は「${mail.body}」です。`);
+    speech.say(`本文の冒頭は次の通りです。${mail.body}`);
     speech.pause('1s');
     var response = speech.ssml(true);
 
