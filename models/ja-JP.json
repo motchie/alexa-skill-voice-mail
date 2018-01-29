@@ -2,24 +2,16 @@
     "interactionModel": {
         "languageModel": {
             "invocationName": "音声メール",
-            "types": [],
             "intents": [{
-                    "name": "AMAZON.YesIntent",
-                    "samples": []
-                },
-                {
                     "name": "AMAZON.CancelIntent",
                     "samples": [
-                        "終了",
-                        "終わった",
-                        "終わり",
-                        "おわり",
                         "やめ",
                         "やめたい",
                         "やめた",
+                        "やめる",
+                        "止めて",
                         "もういいよ",
-                        "大丈夫",
-                        "ストップ"
+                        "大丈夫"
                     ]
                 },
                 {
@@ -32,42 +24,189 @@
                         "終了",
                         "終わった",
                         "終わり",
+                        "中止",
                         "おわり",
-                        "やめ",
-                        "やめた",
-                        "もういいよ",
-                        "大丈夫",
                         "ストップ"
                     ]
                 },
                 {
-                    "name": "UnReadMailIntent",
-                    "slots": [
-
+                    "name": "ReadMails",
+                    "slots": [{
+                            "name": "ReceivedDate",
+                            "type": "AMAZON.DATE"
+                        },
+                        {
+                            "name": "Verb",
+                            "type": "Verb"
+                        }
                     ],
                     "samples": [
-                        "メールをチェック",
-                        "新しいメール",
-                        "新しいメールは",
-                        "新メール",
-                        "新メールは",
-                        "未読",
-                        "未読メール",
-                        "未読メールを読む",
-                        "未読をチェック",
-                        "未読メールをチェック",
-                        "新着",
-                        "新着メール",
-                        "新着メールを読む",
-                        "来てるメール",
-                        "来てるメールを読む",
-                        "メール来てる",
-                        "メール来てるかな",
-                        "メールは来てる",
-                        "メールは来ている"
+                        "{ReceivedDate} のメール",
+                        "{ReceivedDate} のメールを {Verb}",
+                        "{ReceivedDate} のメールは"
+                    ]
+                },
+                {
+                    "name": "UnReadMailIntent",
+                    "slots": [{
+                            "name": "Unread",
+                            "type": "unread"
+                        },
+                        {
+                            "name": "Read",
+                            "type": "read"
+                        },
+                        {
+                            "name": "Is_There",
+                            "type": "is_there"
+                        }
+                    ],
+                    "samples": [
+                        "{Unread} メール",
+                        "{Unread} メールを {Read}",
+                        "メールは {Is_There}",
+                        "メール {Is_There}"
                     ]
                 }
+            ],
+            "types": [{
+                    "values": [{
+                            "name": {
+                                "value": "来てる",
+                                "synonyms": []
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "来てるかな",
+                                "synonyms": []
+                            }
+                        }
+                    ],
+                    "name": "is_there"
+                },
+                {
+                    "values": [{
+                            "name": {
+                                "value": "読む",
+                                "synonyms": []
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "チェック",
+                                "synonyms": []
+                            }
+                        }
+                    ],
+                    "name": "read"
+                },
+                {
+                    "values": [{
+                            "name": {
+                                "value": "新しい",
+                                "synonyms": [
+                                    "新"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "来てる",
+                                "synonyms": []
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "未読",
+                                "synonyms": []
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "新着",
+                                "synonyms": []
+                            }
+                        }
+                    ],
+                    "name": "unread"
+                },
+                {
+                    "values": [{
+                            "name": {
+                                "value": "読む",
+                                "synonyms": [
+                                    "読み上げる"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "読んで",
+                                "synonyms": [
+                                    "読め",
+                                    "読んでほしい"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "チェック",
+                                "synonyms": [
+                                    "チェックする"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "は",
+                                "synonyms": []
+                            }
+                        }
+                    ],
+                    "name": "Verb"
+                }
             ]
-        }
+        },
+        "dialog": {
+            "intents": [{
+                "name": "ReadMails",
+                "confirmationRequired": true,
+                "prompts": {
+                    "confirmation": "Confirm.Intent-ReadMails"
+                },
+                "slots": [{
+                        "name": "ReceivedDate",
+                        "type": "AMAZON.DATE",
+                        "elicitationRequired": true,
+                        "confirmationRequired": false,
+                        "prompts": {
+                            "elicitation": "Elicit.Intent-ReadMails.IntentSlot-ReceivedDate"
+                        }
+                    },
+                    {
+                        "name": "Verb",
+                        "type": "Verb",
+                        "elicitationRequired": false,
+                        "confirmationRequired": false
+                    }
+                ]
+            }]
+        },
+        "prompts": [{
+                "id": "Confirm.Intent-ReadMails",
+                "variations": [{
+                    "type": "PlainText",
+                    "value": "いつのメールを読み上げますか?"
+                }]
+            },
+            {
+                "id": "Elicit.Intent-ReadMails.IntentSlot-ReceivedDate",
+                "variations": [{
+                    "type": "PlainText",
+                    "value": "いつのメールを読み上げますか？"
+                }]
+            }
+        ]
     }
 }
