@@ -2,10 +2,11 @@
 var Alexa = require("alexa-sdk");
 var Speech = require('ssml-builder');
 var moment = require('moment-timezone');
-var languageStrings = require("./lang/languageStrings");
-var accessToken;
+
 var client = require("./lib/office365-rest-api-client");
-var UnreadMailsCount;
+var languageStrings = require("./lang/languageStrings");
+
+var accessToken;
 
 exports.handler = function(event, context) {
     var alexa = Alexa.handler(event, context);
@@ -26,17 +27,17 @@ var handlers = {
         if (typeof accessToken === 'undefined') {
             this.emit(':tellWithLinkAccountCard', this.t("PLEASE_LINK_ACCOUNT"));
         }
+        let unreadMessagesCount;
 
-        client.countUnreadMails()
+        client.countUnreadMessages()
             .then(
                 (value) => {
-                    this.UnreadMailsCount = value;
+                    unreadMessagesCount = value;
 
-                    if (Number(this.UnreadMailsCount) > 0) {
-                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MAILS", this.UnreadMailsCount));
-                        // this.attributes["mode"] = "read_unread_mail";
+                    if (Number(unreadMessagesCount) > 0) {
+                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MESSAGES", unreadMessagesCount), this.t('SAY_SOMETHING'));
                     } else {
-                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("NO_UNREAD_MAIL"));
+                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("NO_UNREAD_MESSAGES"), this.t('SAY_SOMETHING'));
                     }
                 }
             )
@@ -51,76 +52,124 @@ var handlers = {
         if (typeof accessToken === 'undefined') {
             this.emit(':tellWithLinkAccountCard', this.t("PLEASE_LINK_ACCOUNT"));
         }
+        let unreadMessagesCount;
 
-        client.UnReadMails()
+        client.countUnreadMessages()
             .then(
                 (value) => {
-                    const mails = [];
-                    let count = 0;
-                    for (let mail of value) {
-                        let mailresponse = buildMailResponse(++count, mail);
-                        mails.push(mailresponse);
+                    unreadMessagesCount = value;
+
+                    if (Number(unreadMessagesCount) > 0) {
+                        client.retrieveUnreadMessages()
+                            .then(
+                                (value) => {
+                                    const messages = [];
+                                    let count = 0;
+                                    for (let message of value) {
+                                        let messageResponse = buildMessageResponse(++count, message);
+                                        messages.push(messageResponse);
+                                    }
+                                    this.emit(':ask', this.t("THERE_ARE_UNREAD_MESSAGES", unreadMessagesCount) + messages.join(''), this.t('SAY_SOMETHING'));
+                                }
+                            )
+                            .catch(
+                                (error) => { console.log(error); }
+                            );
+                    } else {
+                        this.emit(':ask', this.t("NO_UNREAD_MESSAGES"), this.t('SAY_SOMETHING'));
                     }
-                    this.emit(':ask', mails.join(''));
                 }
             )
             .catch(
                 (error) => { console.log(error); }
             );
     },
-    'AMAZON.YesIntent': function() {
-        var mode = this.attributes['mode'];
-
-        if (mode == "read_unread_mail") {
-            client.UnReadMails()
-                .then(
-                    (value) => {
-                        const mails = [];
-                        let count = 0;
-                        for (let mail of value) {
-                            let mailresponse = buildMailResponse(++count, mail);
-                            mails.push(mailresponse);
-                        }
-                        this.response.speak(mails.join(""));
-                        this.emit(':responseReady');
-                    }
-                )
-                .catch(
-                    (error) => { console.log(error); }
-                );
-        } else {
-            this.response.speak('other mode');
-            this.emit(':responseReady');
+    'ReadMails': function() {
+        if (typeof accessToken === 'undefined') {
+            this.emit(':tellWithLinkAccountCard', this.t("PLEASE_LINK_ACCOUNT"));
         }
+
+        const intentObj = this.event.request.intent;
+        let date = intentObj.slots.ReceivedDate.value;
+
+        if (!moment(date).isValid()) {
+            this.emit(':ask', this.t("INVALID_DATE"), this.t('SAY_SOMETHING'));
+        }
+
+        if (moment(date).isAfter()) {
+            this.emit(':ask', this.t("FUTURE_DATE"), this.t('SAY_SOMETHING'));
+        }
+
+        let messagesCount;
+
+        client.countMessagesPerDay(date)
+            .then(
+                (value) => {
+                    messagesCount = value;
+                    moment.locale('ja');
+
+                    if (Number(messagesCount) > 0) {
+                        client.retrieveMessagesPerDay(date)
+                            .then(
+                                (value) => {
+
+                                    client.retrieveMessagesPerDay(date)
+                                        .then(
+                                            (value) => {
+                                                const messages = [];
+                                                let count = 0;
+                                                for (let message of value) {
+                                                    let messageResponse = buildMessageResponse(++count, message);
+                                                    messages.push(messageResponse);
+                                                }
+                                                this.emit(':ask', this.t("THERE_ARE_MESSAGES", moment(date).format('ll'), messagesCount) + messages.join(''), this.t('SAY_SOMETHING'));
+                                            }
+                                        )
+                                        .catch(
+                                            (error) => { console.log(error); }
+                                        );
+                                }
+                            )
+                            .catch(
+                                (error) => { console.log(error); }
+                            );
+                    } else {
+                        this.emit(':ask', this.t("NO_MESSAGES", moment(date).format('ll')), this.t('SAY_SOMETHING'));
+                    }
+                }
+            ).catch(
+                (error) => { console.log(error); }
+            );
     },
     'SessionEndedRequest': function() {
         console.log('Session ended with reason: ' + this.event.request.reason);
     },
     'AMAZON.StopIntent': function() {
-        this.response.speak(this.t('Bye'));
-        this.emit(':responseReady');
+        this.emit(':tell', this.t('BYE'));
     },
     'AMAZON.HelpIntent': function() {
         this.emit(':ask', this.t('HELP'))
     },
     'AMAZON.CancelIntent': function() {
-        this.response.speak(this.t('Bye'));
-        this.emit(':responseReady');
+        this.emit(':ask', this.t('CANCEL'));
     },
     'Unhandled': function() {
-        this.response.speak(this.t('unhandled'));
+        this.emit(':ask', this.t('unhandled'))
     }
 };
 
-function buildMailResponse(count, mail) {
+function buildMessageResponse(count, message) {
     let speech = new Speech();
-    speech.say(`${count}件目。`);
-    let receivedDate = new Date(mail.received);
+
+    speech.say(`${count}通目。`);
+    let receivedDate = new Date(message.received);
+
     speech.say(`${moment(receivedDate).format("M月D日 hh時mm分")} に受信。`);
     speech.pause('1s');
-    speech.say(`件名は「${mail.subject}」で、`);
-    speech.say(`本文の冒頭は次の通りです。${mail.body}`);
+    speech.say(`件名は「${message.subject}」で、`);
+    speech.say(`本文の冒頭は次の通りです。${message.body}`);
     speech.pause('1s');
+
     var response = speech.ssml(true);
 
     return response;
