@@ -10,10 +10,9 @@ function setAccessToken(token) {
             done(null, token);
         }
     });
-
 }
 
-function countUnreadMails() {
+function countUnreadMessages() {
     return new Promise(
         (resolve, reject) => {
             client
@@ -32,7 +31,7 @@ function countUnreadMails() {
         });
 };
 
-function UnReadMails() {
+function retrieveUnreadMessages() {
     return new Promise(
         (resolve, reject) => {
             client
@@ -42,7 +41,7 @@ function UnReadMails() {
                 .select("id", "from", "subject", "bodyPreview", "receivedDateTime")
                 .get()
                 .then(
-                    (res) => { resolve(processingEMails(res)); }
+                    (res) => { resolve(processMessages(res)); }
                 ).catch(
                     (err) => {
                         reject(console.log(err));
@@ -51,14 +50,15 @@ function UnReadMails() {
         });
 }
 
-function countTodayMails() {
+function countMessagesPerDay(date) {
     return new Promise(
         (resolve, reject) => {
-            let today = todayString();
+            let dateUTCISOString = toUTCISOString(date);
+
             client
                 .api('/me/mailfolders/inbox/messages')
                 .top(25)
-                .filter('receivedDateTime ge ' + today)
+                .filter('receivedDateTime ge ' + dateUTCISOString)
                 .count(true)
                 .select("odata.count")
                 .get()
@@ -73,19 +73,20 @@ function countTodayMails() {
         });
 };
 
-function todayMails() {
+function retrieveMessagesPerDay(date) {
     return new Promise(
         (resolve, reject) => {
-            let today = todayString();
+            let dateUTCISOString = toUTCISOString(date);
+
             client
                 .api('/me/mailfolders/inbox/messages')
                 .top(25)
-                .filter('receivedDateTime ge ' + today)
+                .filter('receivedDateTime ge ' + dateUTCISOString)
                 .select("id", "from", "subject", "bodyPreview", "receivedDateTime")
                 .get()
                 .then(
                     (res) => {
-                        resolve(processingEMails(res));
+                        resolve(processMessages(res));
                     }
                 )
                 .catch(
@@ -94,35 +95,35 @@ function todayMails() {
         });
 };
 
-function todayString() {
+function toUTCISOString(date) {
     moment.tz.setDefault("Asia/Tokyo");
-    let today = moment().startOf('day').utc().format();
+    let dateUTCISOString = moment(date).startOf('day').utc().format();
 
-    return today;
+    return dateUTCISOString;
 }
 
-function processingEMails(rawEmails) {
-    const emails = [];
+function processMessages(rawMessages) {
+    const messages = [];
 
-    for (let rawEmail of rawEmails.value) {
-        const email = {};
+    for (let rawMessage of rawMessages.value) {
+        const message = {};
 
-        email.id = rawEmail.id;
-        email.from = rawEmail.from.emailAddress.name;
-        email.subject = rawEmail.subject;
-        email.body = rawEmail.bodyPreview;
-        email.body = email.body.replace(/\r\n+/ig, "");
-        email.body = email.body.replace(/--+/ig, "");
-        email.body = email.body.replace(/  +/ig, "");
-        email.received = rawEmail.receivedDateTime;
+        message.id = rawMessage.id;
+        message.from = rawMessage.from.emailAddress.name;
+        message.subject = rawMessage.subject;
+        message.body = rawMessage.bodyPreview;
+        message.body = message.body.replace(/\r\n+/ig, "");
+        message.body = message.body.replace(/--+/ig, "");
+        message.body = message.body.replace(/  +/ig, "");
+        message.received = rawMessage.receivedDateTime;
 
-        emails.push(email);
+        messages.push(message);
     }
-    return emails;
+    return messages;
 }
 
 module.exports.setAccessToken = setAccessToken;
-module.exports.countUnreadMails = countUnreadMails;
-module.exports.UnReadMails = UnReadMails;
-module.exports.countTodayMails = countTodayMails;
-module.exports.todayMails = todayMails;
+module.exports.countUnreadMessages = countUnreadMessages;
+module.exports.retrieveUnreadMessages = retrieveUnreadMessages;
+module.exports.countMessagesPerDay = countMessagesPerDay;
+module.exports.retrieveMessagesPerDay = retrieveMessagesPerDay;
