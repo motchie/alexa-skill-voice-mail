@@ -159,12 +159,13 @@ var handlers = {
 };
 
 function buildMessageResponse(count, message) {
+    moment.locale('ja');
     let speech = new Speech();
 
     speech.say(`${count}通目。`);
-    let receivedDate = new Date(message.received);
+    let receivedDate = moment(message.received).format("M月D日 hh時mm分");
 
-    speech.say(`${moment(receivedDate).format("M月D日 hh時mm分")} に受信。`);
+    speech.say(`${receivedDate} に受信。`);
     speech.pause('1s');
     speech.say(`件名は「${message.subject}」で、`);
     speech.say(`本文の冒頭は次の通りです。${message.body}`);
