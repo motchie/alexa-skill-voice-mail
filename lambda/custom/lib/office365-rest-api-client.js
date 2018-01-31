@@ -54,11 +54,19 @@ function countMessagesPerDay(date) {
     return new Promise(
         (resolve, reject) => {
             let dateUTCISOString = toUTCISOString(date);
+            console.log(dateUTCISOString);
+
+            let nextUTCISOString = nextDayUTCISOString(date);
+
+            console.log(nextUTCISOString);
 
             client
                 .api('/me/mailfolders/inbox/messages')
+                .headers({
+                    'Prefer': 'outlook.timezone="Tokyo Standard Time"'
+                })
                 .top(25)
-                .filter('receivedDateTime ge ' + dateUTCISOString)
+                .filter('receivedDateTime ge ' + dateUTCISOString + ' and receivedDateTime lt ' + nextUTCISOString)
                 .count(true)
                 .select("odata.count")
                 .get()
@@ -77,11 +85,15 @@ function retrieveMessagesPerDay(date) {
     return new Promise(
         (resolve, reject) => {
             let dateUTCISOString = toUTCISOString(date);
+            let nextUTCISOString = nextDayUTCISOString(date);
 
             client
                 .api('/me/mailfolders/inbox/messages')
+                .headers({
+                    'Prefer': 'outlook.timezone="Tokyo Standard Time"'
+                })
                 .top(25)
-                .filter('receivedDateTime ge ' + dateUTCISOString)
+                .filter('receivedDateTime ge ' + dateUTCISOString + ' and receivedDateTime lt ' + nextUTCISOString)
                 .select("id", "from", "subject", "bodyPreview", "receivedDateTime")
                 .get()
                 .then(
@@ -100,6 +112,13 @@ function toUTCISOString(date) {
     let dateUTCISOString = moment(date).startOf('day').utc().format();
 
     return dateUTCISOString;
+}
+
+function nextDayUTCISOString(date) {
+    moment.tz.setDefault("Asia/Tokyo");
+    let nextDayUTCISOString = moment(date).add(1, 'days').startOf('day').utc().format();
+
+    return nextDayUTCISOString;
 }
 
 function processMessages(rawMessages) {
