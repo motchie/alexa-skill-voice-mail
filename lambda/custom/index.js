@@ -1,16 +1,16 @@
 'use strict';
-var Alexa = require("alexa-sdk");
+var Alexa = require('alexa-sdk');
 var Speech = require('ssml-builder');
 var moment = require('moment-timezone');
 
-var client = require("./lib/office365-rest-api-client");
-var languageStrings = require("./lang/languageStrings");
+var client = require('./lib/office365-rest-api-client');
+var languageStrings = require('./lang/languageStrings');
 
 var accessToken;
 
 exports.handler = function(event, context) {
     var alexa = Alexa.handler(event, context);
-    alexa.appId = "amzn1.ask.skill.0e676bea-fc2e-4cb5-bbfa-e5ad4d220fea";
+    alexa.appId = 'amzn1.ask.skill.0e676bea-fc2e-4cb5-bbfa-e5ad4d220fea';
     alexa.resources = languageStrings;
 
     accessToken = event.session.user.accessToken;
@@ -25,7 +25,7 @@ exports.handler = function(event, context) {
 var handlers = {
     'LaunchRequest': function() {
         if (typeof accessToken === 'undefined') {
-            this.emit(':tellWithLinkAccountCard', this.t("PLEASE_LINK_ACCOUNT"));
+            this.emit(':tellWithLinkAccountCard', this.t('PLEASE_LINK_ACCOUNT'));
         }
         let unreadMessagesCount;
 
@@ -35,9 +35,9 @@ var handlers = {
                     unreadMessagesCount = value;
 
                     if (Number(unreadMessagesCount) > 0) {
-                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("THERE_ARE_UNREAD_MESSAGES", unreadMessagesCount), this.t('SAY_SOMETHING'));
+                        this.emit(':ask', this.t('WELCOME_TO_VOICEMAIL') + this.t('THERE_ARE_UNREAD_MESSAGES', unreadMessagesCount), this.t('SAY_SOMETHING'));
                     } else {
-                        this.emit(':ask', this.t("WELCOME_TO_VOICEMAIL") + this.t("NO_UNREAD_MESSAGES"), this.t('SAY_SOMETHING'));
+                        this.emit(':ask', this.t('WELCOME_TO_VOICEMAIL') + this.t('NO_UNREAD_MESSAGES'), this.t('SAY_SOMETHING'));
                     }
                 }
             )
@@ -50,7 +50,7 @@ var handlers = {
     },
     'UnReadMail': function() {
         if (typeof accessToken === 'undefined') {
-            this.emit(':tellWithLinkAccountCard', this.t("PLEASE_LINK_ACCOUNT"));
+            this.emit(':tellWithLinkAccountCard', this.t('PLEASE_LINK_ACCOUNT'));
         }
         let unreadMessagesCount;
 
@@ -69,14 +69,14 @@ var handlers = {
                                         let messageResponse = buildMessageResponse(++count, message);
                                         messages.push(messageResponse);
                                     }
-                                    this.emit(':ask', this.t("THERE_ARE_UNREAD_MESSAGES", unreadMessagesCount) + messages.join(''), this.t('SAY_SOMETHING'));
+                                    this.emit(':ask', this.t('THERE_ARE_UNREAD_MESSAGES', unreadMessagesCount) + messages.join(''), this.t('SAY_SOMETHING'));
                                 }
                             )
                             .catch(
                                 (error) => { console.log(error); }
                             );
                     } else {
-                        this.emit(':ask', this.t("NO_UNREAD_MESSAGES"), this.t('SAY_SOMETHING'));
+                        this.emit(':ask', this.t('NO_UNREAD_MESSAGES'), this.t('SAY_SOMETHING'));
                     }
                 }
             )
@@ -86,18 +86,18 @@ var handlers = {
     },
     'ReadMails': function() {
         if (typeof accessToken === 'undefined') {
-            this.emit(':tellWithLinkAccountCard', this.t("PLEASE_LINK_ACCOUNT"));
+            this.emit(':tellWithLinkAccountCard', this.t('PLEASE_LINK_ACCOUNT'));
         }
 
         const intentObj = this.event.request.intent;
         let date = intentObj.slots.ReceivedDate.value;
 
         if (!moment(date).isValid()) {
-            this.emit(':ask', this.t("INVALID_DATE"), this.t('SAY_SOMETHING'));
+            this.emit(':ask', this.t('INVALID_DATE'), this.t('SAY_SOMETHING'));
         }
 
         if (moment(date).isAfter()) {
-            this.emit(':ask', this.t("FUTURE_DATE"), this.t('SAY_SOMETHING'));
+            this.emit(':ask', this.t('FUTURE_DATE'), this.t('SAY_SOMETHING'));
         }
 
         let messagesCount;
@@ -122,7 +122,7 @@ var handlers = {
                                                     let messageResponse = buildMessageResponse(++count, message);
                                                     messages.push(messageResponse);
                                                 }
-                                                this.emit(':ask', this.t("THERE_ARE_MESSAGES", moment(date).format('ll'), messagesCount) + messages.join(''), this.t('SAY_SOMETHING'));
+                                                this.emit(':ask', this.t('THERE_ARE_MESSAGES', moment(date).format('ll'), messagesCount) + messages.join(''), this.t('SAY_SOMETHING'));
                                             }
                                         )
                                         .catch(
@@ -134,7 +134,7 @@ var handlers = {
                                 (error) => { console.log(error); }
                             );
                     } else {
-                        this.emit(':ask', this.t("NO_MESSAGES", moment(date).format('ll')), this.t('SAY_SOMETHING'));
+                        this.emit(':ask', this.t('NO_MESSAGES', moment(date).format('ll')), this.t('SAY_SOMETHING'));
                     }
                 }
             ).catch(
@@ -163,7 +163,7 @@ function buildMessageResponse(count, message) {
     let speech = new Speech();
 
     speech.say(`${count}通目。`);
-    let receivedDate = moment(message.received).format("M月D日 hh時mm分");
+    let receivedDate = moment(message.received).format('M月D日 hh時mm分');
 
     speech.say(`${receivedDate} に受信。`);
     speech.pause('1s');

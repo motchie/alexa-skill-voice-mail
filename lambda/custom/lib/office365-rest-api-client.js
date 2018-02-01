@@ -1,5 +1,5 @@
 'use strict';
-const MicrosoftGraph = require("@microsoft/microsoft-graph-client");
+const MicrosoftGraph = require('@microsoft/microsoft-graph-client');
 var moment = require('moment-timezone');
 
 let client;
@@ -18,9 +18,9 @@ function countUnreadMessages() {
             client
                 .api('/me/mailfolders/inbox/messages')
                 .top(25)
-                .filter("isRead eq false")
+                .filter('isRead eq false')
                 .count(true)
-                .select("odata.count")
+                .select('odata.count')
                 .get()
                 .then(
                     (res) => { resolve(res.value.length); }
@@ -37,8 +37,8 @@ function retrieveUnreadMessages() {
             client
                 .api('/me/mailfolders/inbox/messages')
                 .top(25)
-                .filter("isRead eq false")
-                .select("id", "from", "subject", "bodyPreview", "receivedDateTime")
+                .filter('isRead eq false')
+                .select('id', 'from', 'subject', 'bodyPreview', 'receivedDateTime')
                 .get()
                 .then(
                     (res) => { resolve(processMessages(res)); }
@@ -68,7 +68,7 @@ function countMessagesPerDay(date) {
                 .top(25)
                 .filter('receivedDateTime ge ' + dateUTCISOString + ' and receivedDateTime lt ' + nextUTCISOString)
                 .count(true)
-                .select("odata.count")
+                .select('odata.count')
                 .get()
                 .then(
                     (res) => {
@@ -94,7 +94,7 @@ function retrieveMessagesPerDay(date) {
                 })
                 .top(25)
                 .filter('receivedDateTime ge ' + dateUTCISOString + ' and receivedDateTime lt ' + nextUTCISOString)
-                .select("id", "from", "subject", "bodyPreview", "receivedDateTime")
+                .select('id', 'from', 'subject', 'bodyPreview', 'receivedDateTime')
                 .get()
                 .then(
                     (res) => {
@@ -108,14 +108,14 @@ function retrieveMessagesPerDay(date) {
 };
 
 function toUTCISOString(date) {
-    moment.tz.setDefault("Asia/Tokyo");
+    moment.tz.setDefault('Asia/Tokyo');
     let dateUTCISOString = moment(date).startOf('day').utc().format();
 
     return dateUTCISOString;
 }
 
 function nextDayUTCISOString(date) {
-    moment.tz.setDefault("Asia/Tokyo");
+    moment.tz.setDefault('Asia/Tokyo');
     let nextDayUTCISOString = moment(date).add(1, 'days').startOf('day').utc().format();
 
     return nextDayUTCISOString;
@@ -131,9 +131,9 @@ function processMessages(rawMessages) {
         message.from = rawMessage.from.emailAddress.name;
         message.subject = rawMessage.subject;
         message.body = rawMessage.bodyPreview;
-        message.body = message.body.replace(/\r\n+/ig, "");
-        message.body = message.body.replace(/--+/ig, "");
-        message.body = message.body.replace(/  +/ig, "");
+        message.body = message.body.replace(/\r\n+/ig, '');
+        message.body = message.body.replace(/--+/ig, '');
+        message.body = message.body.replace(/  +/ig, '');
         message.received = rawMessage.receivedDateTime;
 
         messages.push(message);
