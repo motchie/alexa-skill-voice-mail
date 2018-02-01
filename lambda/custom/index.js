@@ -10,7 +10,7 @@ var accessToken;
 
 exports.handler = function(event, context) {
     var alexa = Alexa.handler(event, context);
-    alexa.appId = 'amzn1.ask.skill.0e676bea-fc2e-4cb5-bbfa-e5ad4d220fea';
+    alexa.appId = process.env.ALEXA_APP_ID;
     alexa.resources = languageStrings;
 
     accessToken = event.session.user.accessToken;
