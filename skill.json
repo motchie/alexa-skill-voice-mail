@@ -18,9 +18,7 @@
                         "未読"
                     ],
                     "name": "音声メールM",
-                    "smallIconUri": "https://api.amazonalexa.com/v0/skills/amzn1.ask.skill.0e676bea-fc2e-4cb5-bbfa-e5ad4d220fea/images/eyJkIjoiT3FzTStWZ3E5U0NMaU5nUlRWQ25GOHMrZmhBWTNTenhZMDcrNjA3TUd3dllKVnB6ejQ2WEJ0VDVnS1FyTCtmbCtsTVd6RWxlOCt5dkdGY0x3NS9SalhWWi9wdkhrM2FqckJyb2QzZjhwL0pFb3pNZWZUUXRqNG5QZHVlWnR6dS8iLCJpdiI6IkppUVNBUkRvZlIreVZRWEdNRVRBSUE9PSIsInYiOjF9",
-                    "description": "音声でOutlook.com、Exchange Online、Office365のメールがチェックできます。",
-                    "largeIconUri": "https://api.amazonalexa.com/v0/skills/amzn1.ask.skill.0e676bea-fc2e-4cb5-bbfa-e5ad4d220fea/images/eyJkIjoiQStJajNEbG41VjlKc01SNmFJOUw1Q1Yvcmoyd1VqVXRhMnJRbW01ZEdTR3doMEJKRHRFdWpvVHgzRlF3ZlN1RjVDYXZxWnJER2RQNWY0OVk3elZkdVFXWENDa1hqNzNXc0xDSXpJVkhpdzR0YVpzNzV5N1FRQWVsK2w1TjJRekhJakZLWWZIMUYzMHkrUFQ3Qmc1c3l3PT0iLCJpdiI6InBnN1JldWNlaWlNc2hPV1RGSGw5QlE9PSIsInYiOjF9"
+                    "description": "音声でOutlook.com、Exchange Online、Office365のメールがチェックできます。"
                 }
             },
             "isAvailableWorldwide": false,
