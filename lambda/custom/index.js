@@ -45,10 +45,10 @@ var handlers = {
                 (error) => { console.log(error); }
             );
     },
-    'UnReadMailIntent': function() {
-        this.emit('UnReadMail');
+    'UnreadMessagesIntent': function() {
+        this.emit('UnreadMessages');
     },
-    'UnReadMail': function() {
+    'UnreadMessages': function() {
         if (typeof accessToken === 'undefined') {
             this.emit(':tellWithLinkAccountCard', this.t('PLEASE_LINK_ACCOUNT'));
         }
@@ -84,7 +84,7 @@ var handlers = {
                 (error) => { console.log(error); }
             );
     },
-    'ReadMails': function() {
+    'ReadMessages': function() {
         if (typeof accessToken === 'undefined') {
             this.emit(':tellWithLinkAccountCard', this.t('PLEASE_LINK_ACCOUNT'));
         }
