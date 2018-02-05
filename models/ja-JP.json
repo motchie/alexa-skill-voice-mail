@@ -41,6 +41,11 @@
                         }
                     ],
                     "samples": [
+                        "{ReceivedDate} は",
+                        "{ReceivedDate} を教えて",
+                        "{ReceivedDate} を教えてください",
+                        "{ReceivedDate} {Verb}",
+                        "{ReceivedDate} を {Verb}",
                         "{ReceivedDate} のメール",
                         "{ReceivedDate} のメールを {Verb}",
                         "{ReceivedDate} のメールは"
@@ -62,6 +67,9 @@
                         }
                     ],
                     "samples": [
+                        "{Unread} は",
+                        "{Unread} を教えて",
+                        "{Unread} を教えてください",
                         "{Unread} メール",
                         "{Unread} メールを {Read}",
                         "メールは {Is_There}",
