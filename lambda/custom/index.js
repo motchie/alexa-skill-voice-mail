@@ -84,7 +84,7 @@ var handlers = {
                 (error) => { console.log(error); }
             );
     },
-    'ReadMessages': function() {
+    'ReadMessagesIntent': function() {
         if (typeof accessToken === 'undefined') {
             this.emit(':tellWithLinkAccountCard', this.t('PLEASE_LINK_ACCOUNT'));
         }

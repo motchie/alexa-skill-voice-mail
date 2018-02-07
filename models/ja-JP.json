@@ -30,7 +30,7 @@
                     ]
                 },
                 {
-                    "name": "ReadMails",
+                    "name": "ReadMessagesIntent",
                     "slots": [{
                             "name": "ReceivedDate",
                             "type": "AMAZON.DATE"
@@ -52,9 +52,9 @@
                     ]
                 },
                 {
-                    "name": "UnReadMailIntent",
+                    "name": "UnreadMessagesIntent",
                     "slots": [{
-                            "name": "Unread",
+                            "name": "UnreadMessage",
                             "type": "unread"
                         },
                         {
@@ -67,11 +67,11 @@
                         }
                     ],
                     "samples": [
-                        "{Unread} は",
-                        "{Unread} を教えて",
-                        "{Unread} を教えてください",
-                        "{Unread} メール",
-                        "{Unread} メールを {Read}",
+                        "{UnreadMessage} は",
+                        "{UnreadMessage} を教えて",
+                        "{UnreadMessage} を教えてください",
+                        "{UnreadMessage} メール",
+                        "{UnreadMessage} メールを {Read}",
                         "メールは {Is_There}",
                         "メール {Is_There}"
                     ]
@@ -178,10 +178,10 @@
         },
         "dialog": {
             "intents": [{
-                "name": "ReadMails",
+                "name": "ReadMessagesIntent",
                 "confirmationRequired": true,
                 "prompts": {
-                    "confirmation": "Confirm.Intent-ReadMails"
+                    "confirmation": "Confirm.Intent-ReadMessagesIntent"
                 },
                 "slots": [{
                         "name": "ReceivedDate",
@@ -189,7 +189,7 @@
                         "elicitationRequired": true,
                         "confirmationRequired": false,
                         "prompts": {
-                            "elicitation": "Elicit.Intent-ReadMails.IntentSlot-ReceivedDate"
+                            "elicitation": "Elicit.Intent-ReadMessagesIntent.IntentSlot-ReceivedDate"
                         }
                     },
                     {
@@ -202,14 +202,14 @@
             }]
         },
         "prompts": [{
-                "id": "Confirm.Intent-ReadMails",
+                "id": "Confirm.Intent-ReadMessagesIntent",
                 "variations": [{
                     "type": "PlainText",
                     "value": "いつのメールを読み上げますか?"
                 }]
             },
             {
-                "id": "Elicit.Intent-ReadMails.IntentSlot-ReceivedDate",
+                "id": "Elicit.Intent-ReadMessagesIntent.IntentSlot-ReceivedDate",
                 "variations": [{
                     "type": "PlainText",
                     "value": "いつのメールを読み上げますか？"
