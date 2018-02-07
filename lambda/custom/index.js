@@ -35,9 +35,9 @@ var handlers = {
                     unreadMessagesCount = value;
 
                     if (Number(unreadMessagesCount) > 0) {
-                        this.emit(':ask', this.t('WELCOME_TO_VOICEMAIL') + this.t('THERE_ARE_UNREAD_MESSAGES', unreadMessagesCount), this.t('SAY_SOMETHING'));
+                        this.emit(':ask', this.t('WELCOME_TO_VOICEMAIL') + this.t('THERE_ARE_UNREAD_MESSAGES', unreadMessagesCount) + this.t('PLEASE'), this.t('SAY_SOMETHING'));
                     } else {
-                        this.emit(':ask', this.t('WELCOME_TO_VOICEMAIL') + this.t('NO_UNREAD_MESSAGES'), this.t('SAY_SOMETHING'));
+                        this.emit(':ask', this.t('WELCOME_TO_VOICEMAIL') + this.t('NO_UNREAD_MESSAGES') + this.t('PLEASE'), this.t('SAY_SOMETHING'));
                     }
                 }
             )
@@ -69,14 +69,14 @@ var handlers = {
                                         let messageResponse = buildMessageResponse(++count, message);
                                         messages.push(messageResponse);
                                     }
-                                    this.emit(':ask', this.t('THERE_ARE_UNREAD_MESSAGES', unreadMessagesCount) + messages.join(''), this.t('SAY_SOMETHING'));
+                                    this.emit(':ask', this.t('THERE_ARE_UNREAD_MESSAGES', unreadMessagesCount) + messages.join('') + this.t('PLEASE'), this.t('SAY_SOMETHING'));
                                 }
                             )
                             .catch(
                                 (error) => { console.log(error); }
                             );
                     } else {
-                        this.emit(':ask', this.t('NO_UNREAD_MESSAGES'), this.t('SAY_SOMETHING'));
+                        this.emit(':ask', this.t('NO_UNREAD_MESSAGES') + this.t('PLEASE'), this.t('SAY_SOMETHING'));
                     }
                 }
             )
@@ -122,7 +122,7 @@ var handlers = {
                                                     let messageResponse = buildMessageResponse(++count, message);
                                                     messages.push(messageResponse);
                                                 }
-                                                this.emit(':ask', this.t('THERE_ARE_MESSAGES', moment(date).format('ll'), messagesCount) + messages.join(''), this.t('SAY_SOMETHING'));
+                                                this.emit(':ask', this.t('THERE_ARE_MESSAGES', moment(date).format('ll'), messagesCount) + messages.join('') + this.t('PLEASE'), this.t('SAY_SOMETHING'));
                                             }
                                         )
                                         .catch(
@@ -134,7 +134,7 @@ var handlers = {
                                 (error) => { console.log(error); }
                             );
                     } else {
-                        this.emit(':ask', this.t('NO_MESSAGES', moment(date).format('ll')), this.t('SAY_SOMETHING'));
+                        this.emit(':ask', this.t('NO_MESSAGES', moment(date).format('ll')) + this.t('PLEASE'), this.t('SAY_SOMETHING'));
                     }
                 }
             ).catch(
