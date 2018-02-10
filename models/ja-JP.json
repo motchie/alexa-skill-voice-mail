@@ -64,6 +64,10 @@
                         {
                             "name": "Is_There",
                             "type": "is_there"
+                        },
+                        {
+                            "name": "verb",
+                            "type": "Verb"
                         }
                     ],
                     "samples": [
@@ -87,6 +91,24 @@
                         {
                             "name": {
                                 "value": "来てるかな",
+                                "synonyms": []
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "届いている",
+                                "synonyms": []
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "届いているかな",
+                                "synonyms": []
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "届いた",
                                 "synonyms": []
                             }
                         }
