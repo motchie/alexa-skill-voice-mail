@@ -1,242 +1,349 @@
 {
-    "interactionModel": {
-        "languageModel": {
-            "invocationName": "音声メール",
-            "intents": [{
-                    "name": "AMAZON.CancelIntent",
-                    "samples": [
-                        "やめ",
-                        "やめたい",
-                        "やめた",
-                        "やめる",
-                        "止めて",
-                        "もういいよ",
-                        "大丈夫"
-                    ]
-                },
-                {
-                    "name": "AMAZON.HelpIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.StopIntent",
-                    "samples": [
-                        "終了",
-                        "終わった",
-                        "終わり",
-                        "中止",
-                        "おわり",
-                        "ストップ"
-                    ]
-                },
-                {
-                    "name": "ReadMessagesIntent",
-                    "slots": [{
-                            "name": "ReceivedDate",
-                            "type": "AMAZON.DATE"
-                        },
-                        {
-                            "name": "Verb",
-                            "type": "Verb"
-                        }
-                    ],
-                    "samples": [
-                        "{ReceivedDate} は",
-                        "{ReceivedDate} を教えて",
-                        "{ReceivedDate} を教えてください",
-                        "{ReceivedDate} {Verb}",
-                        "{ReceivedDate} を {Verb}",
-                        "{ReceivedDate} のメール",
-                        "{ReceivedDate} のメールを {Verb}",
-                        "{ReceivedDate} のメールは"
-                    ]
-                },
-                {
-                    "name": "UnreadMessagesIntent",
-                    "slots": [{
-                            "name": "UnreadMessage",
-                            "type": "unread"
-                        },
-                        {
-                            "name": "Read",
-                            "type": "read"
-                        },
-                        {
-                            "name": "Is_There",
-                            "type": "is_there"
-                        },
-                        {
-                            "name": "verb",
-                            "type": "Verb"
-                        }
-                    ],
-                    "samples": [
-                        "{UnreadMessage} は",
-                        "{UnreadMessage} を教えて",
-                        "{UnreadMessage} を教えてください",
-                        "{UnreadMessage} メール",
-                        "{UnreadMessage} メールを {Read}",
-                        "メールは {Is_There}",
-                        "メール {Is_There}"
-                    ]
-                }
-            ],
-            "types": [{
-                    "values": [{
-                            "name": {
-                                "value": "来てる",
-                                "synonyms": []
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "来てるかな",
-                                "synonyms": []
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "届いている",
-                                "synonyms": []
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "届いているかな",
-                                "synonyms": []
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "届いた",
-                                "synonyms": []
-                            }
-                        }
-                    ],
-                    "name": "is_there"
-                },
-                {
-                    "values": [{
-                            "name": {
-                                "value": "読む",
-                                "synonyms": []
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "チェック",
-                                "synonyms": []
-                            }
-                        }
-                    ],
-                    "name": "read"
-                },
-                {
-                    "values": [{
-                            "name": {
-                                "value": "新しい",
-                                "synonyms": [
-                                    "新"
-                                ]
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "来てる",
-                                "synonyms": []
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "未読",
-                                "synonyms": []
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "新着",
-                                "synonyms": []
-                            }
-                        }
-                    ],
-                    "name": "unread"
-                },
-                {
-                    "values": [{
-                            "name": {
-                                "value": "読む",
-                                "synonyms": [
-                                    "読み上げる"
-                                ]
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "読んで",
-                                "synonyms": [
-                                    "読め",
-                                    "読んでほしい"
-                                ]
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "チェック",
-                                "synonyms": [
-                                    "チェックする"
-                                ]
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "は",
-                                "synonyms": []
-                            }
-                        }
-                    ],
-                    "name": "Verb"
-                }
-            ]
-        },
-        "dialog": {
-            "intents": [{
-                "name": "ReadMessagesIntent",
-                "confirmationRequired": true,
-                "prompts": {
-                    "confirmation": "Confirm.Intent-ReadMessagesIntent"
-                },
-                "slots": [{
-                        "name": "ReceivedDate",
-                        "type": "AMAZON.DATE",
-                        "elicitationRequired": true,
-                        "confirmationRequired": false,
-                        "prompts": {
-                            "elicitation": "Elicit.Intent-ReadMessagesIntent.IntentSlot-ReceivedDate"
+    "languageModel": {
+        "types": [{
+                "name": "is_there",
+                "values": [{
+                        "id": null,
+                        "name": {
+                            "value": "届いた",
+                            "synonyms": [
+                                "届いているかな",
+                                "届いている",
+                                "届いたのかな",
+                                "届いたのかしら",
+                                "届いているかい",
+                                "届いたかな"
+                            ]
                         }
                     },
                     {
-                        "name": "Verb",
-                        "type": "Verb",
-                        "elicitationRequired": false,
-                        "confirmationRequired": false
+                        "id": null,
+                        "name": {
+                            "value": "来た",
+                            "synonyms": [
+                                "来てる",
+                                "来てるかな",
+                                "来ているかな",
+                                "来たかな",
+                                "来たのかな",
+                                "来たのかしら",
+                                "来たかい"
+                            ]
+                        }
                     }
                 ]
-            }]
-        },
-        "prompts": [{
-                "id": "Confirm.Intent-ReadMessagesIntent",
-                "variations": [{
-                    "type": "PlainText",
-                    "value": "いつのメールを読み上げますか?"
-                }]
             },
             {
-                "id": "Elicit.Intent-ReadMessagesIntent.IntentSlot-ReceivedDate",
-                "variations": [{
-                    "type": "PlainText",
-                    "value": "いつのメールを読み上げますか？"
-                }]
+                "name": "unread",
+                "values": [{
+                        "id": null,
+                        "name": {
+                            "value": "新しい",
+                            "synonyms": [
+                                "新"
+                            ]
+                        }
+                    },
+                    {
+                        "id": null,
+                        "name": {
+                            "value": "来てる",
+                            "synonyms": []
+                        }
+                    },
+                    {
+                        "id": null,
+                        "name": {
+                            "value": "未読",
+                            "synonyms": []
+                        }
+                    },
+                    {
+                        "id": null,
+                        "name": {
+                            "value": "新着",
+                            "synonyms": []
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Verb",
+                "values": [{
+                        "id": null,
+                        "name": {
+                            "value": "読む",
+                            "synonyms": [
+                                "読んでほしい",
+                                "読め",
+                                "読んでちょうだい",
+                                "読んでください",
+                                "読んでくれる"
+                            ]
+                        }
+                    },
+                    {
+                        "id": null,
+                        "name": {
+                            "value": "チェック",
+                            "synonyms": [
+                                "チェックする",
+                                "チェックして",
+                                "チェックしろ",
+                                "チェックせよ",
+                                "チェックしてほしい",
+                                "チェックしてください",
+                                "チェックしてちょうだい",
+                                "チェックしなさい",
+                                "チェックしてくれる"
+                            ]
+                        }
+                    },
+                    {
+                        "id": null,
+                        "name": {
+                            "value": "読み上げる",
+                            "synonyms": [
+                                "読み上げ",
+                                "読み上げて",
+                                "読み上げろ",
+                                "読み上げしろ",
+                                "読み上げして",
+                                "読み上げてちょうだい",
+                                "読み上げなさい",
+                                "読み上げてくれる"
+                            ]
+                        }
+                    },
+                    {
+                        "id": null,
+                        "name": {
+                            "value": "朗読",
+                            "synonyms": [
+                                "朗読して",
+                                "朗読しろ",
+                                "朗読せよ",
+                                "朗読してちょうだい",
+                                "朗読してください",
+                                "朗読しなさい",
+                                "朗読する",
+                                "朗読してくれる"
+                            ]
+                        }
+                    },
+                    {
+                        "id": null,
+                        "name": {
+                            "value": "読み取る",
+                            "synonyms": [
+                                "読み取れ",
+                                "読み取り",
+                                "読み取りせよ",
+                                "読み取りして",
+                                "読み取りなさい",
+                                "読み取ってちょうだい",
+                                "読み取って",
+                                "読み取ってくれる",
+                                "読み取ってくれ"
+                            ]
+                        }
+                    },
+                    {
+                        "id": null,
+                        "name": {
+                            "value": "取る",
+                            "synonyms": [
+                                "取れ",
+                                "取ってください",
+                                "取ってちょうだい",
+                                "取りなさい",
+                                "取って",
+                                "取ってくれる"
+                            ]
+                        }
+                    },
+                    {
+                        "id": null,
+                        "name": {
+                            "value": "受け取る",
+                            "synonyms": [
+                                "受け取れ",
+                                "受け取り",
+                                "受け取って",
+                                "受け取りせよ",
+                                "受け取ってちょうだい",
+                                "受け取ってください",
+                                "受け取りなさい",
+                                "受け取ってくれる",
+                                "受け取ってほしい"
+                            ]
+                        }
+                    },
+                    {
+                        "id": null,
+                        "name": {
+                            "value": "教える",
+                            "synonyms": [
+                                "教えて",
+                                "教えろ",
+                                "教えてください",
+                                "教えてちょうだい",
+                                "教えなさい",
+                                "教えてくれる",
+                                "教えてくれない",
+                                "教えてほしい"
+                            ]
+                        }
+                    },
+                    {
+                        "id": null,
+                        "name": {
+                            "value": "閲覧",
+                            "synonyms": [
+                                "閲覧して",
+                                "閲覧しろ",
+                                "閲覧せよ",
+                                "閲覧する",
+                                "閲覧してちょうだい",
+                                "閲覧しなさい",
+                                "閲覧してください",
+                                "閲覧してくれる",
+                                "閲覧してくれない",
+                                "閲覧してほしい"
+                            ]
+                        }
+                    },
+                    {
+                        "id": null,
+                        "name": {
+                            "value": "開く",
+                            "synonyms": [
+                                "開いて",
+                                "開け",
+                                "開きなさい",
+                                "開いてちょうだい",
+                                "開こう",
+                                "開いてくれる",
+                                "開いてくれない"
+                            ]
+                        }
+                    }
+                ]
             }
-        ]
+        ],
+        "intents": [{
+                "name": "AMAZON.CancelIntent",
+                "samples": [
+                    "やめ",
+                    "やめたい",
+                    "やめた",
+                    "やめる",
+                    "もういいよ",
+                    "大丈夫"
+                ]
+            },
+            {
+                "name": "AMAZON.HelpIntent",
+                "samples": []
+            },
+            {
+                "name": "AMAZON.StopIntent",
+                "samples": [
+                    "終了",
+                    "終わった",
+                    "終わり",
+                    "中止",
+                    "おわり",
+                    "ストップ"
+                ]
+            },
+            {
+                "name": "ReadMessagesIntent",
+                "samples": [
+                    "{ReceivedDate} は",
+                    "{ReceivedDate} {Verb}",
+                    "{ReceivedDate} を {Verb}",
+                    "{ReceivedDate} のメール",
+                    "{ReceivedDate} のメールは",
+                    "{ReceivedDate} のメールを {Verb}"
+                ],
+                "slots": [{
+                        "name": "ReceivedDate",
+                        "type": "AMAZON.DATE"
+                    },
+                    {
+                        "name": "Verb",
+                        "type": "Verb"
+                    }
+                ]
+            },
+            {
+                "name": "UnreadMessagesIntent",
+                "samples": [
+                    "{UnreadMessage} は",
+                    "{UnreadMessage} メール",
+                    "{UnreadMessage} を {verb}",
+                    "{UnreadMessage} メール を {verb}",
+                    "メールは {Is_There}",
+                    "メール {Is_There}",
+                    "メール {verb}"
+                ],
+                "slots": [{
+                        "name": "UnreadMessage",
+                        "type": "unread"
+                    },
+                    {
+                        "name": "Is_There",
+                        "type": "is_there"
+                    },
+                    {
+                        "name": "verb",
+                        "type": "Verb"
+                    }
+                ]
+            }
+        ],
+        "invocationName": "音声メール"
+    },
+    "prompts": [{
+            "id": "Confirm.Intent-ReadMessagesIntent",
+            "variations": [{
+                "type": "PlainText",
+                "value": "いつのメールを読み上げますか?"
+            }]
+        },
+        {
+            "id": "Elicit.Intent-ReadMessagesIntent.IntentSlot-ReceivedDate",
+            "variations": [{
+                "type": "PlainText",
+                "value": "いつのメールを読み上げますか？"
+            }]
+        }
+    ],
+    "dialog": {
+        "intents": [{
+            "name": "ReadMessagesIntent",
+            "confirmationRequired": true,
+            "prompts": {
+                "confirmation": "Confirm.Intent-ReadMessagesIntent"
+            },
+            "slots": [{
+                    "name": "ReceivedDate",
+                    "type": "AMAZON.DATE",
+                    "elicitationRequired": true,
+                    "confirmationRequired": false,
+                    "prompts": {
+                        "elicitation": "Elicit.Intent-ReadMessagesIntent.IntentSlot-ReceivedDate"
+                    }
+                },
+                {
+                    "name": "Verb",
+                    "type": "Verb",
+                    "elicitationRequired": false,
+                    "confirmationRequired": false,
+                    "prompts": {}
+                }
+            ]
+        }]
     }
 }
