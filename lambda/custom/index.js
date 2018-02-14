@@ -151,7 +151,7 @@ var handlers = {
         this.emit(':ask', this.t('HELP'))
     },
     'AMAZON.CancelIntent': function() {
-        this.emit(':ask', this.t('CANCEL'));
+        this.emit(':tell', this.t('CANCEL'));
     },
     'Unhandled': function() {
         this.emit(':ask', this.t('unhandled'))
