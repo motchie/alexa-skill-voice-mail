@@ -5,7 +5,7 @@ const languageStrings = {
             'WELCOME_TO_VOICEMAIL': '音声メールです。',
             'THERE_ARE_UNREAD_MESSAGES': '%s 通の未読メールがあります。<break time=\'1s\'/>',
             'NO_UNREAD_MESSAGES': '未読メールはありません。<break time=\'1s\'/>',
-            'PLEASE': '指示をどうぞ',
+            'PLEASE': '「未読メール」と発話すると未読メールを、「今日のメール」「昨日のメール」などと発話すると、該当する日のメールの件名、受信日付、本文の先頭250文字程度を読み上げます。では、発話してみてください。',
             'INVALID_DATE': '日付が認識できませんでした。発話を変更してお試しください。<break time=\'1s\'/>指示をどうぞ。',
             'FUTURE_DATE': '未来の日付として認識されました。発話を変更してお試しください。<break time=\'1s\'/>指示をどうぞ。',
             'NO_MESSAGES': '%s にはメールが届いていません。<break time=\'1s\'/>',
