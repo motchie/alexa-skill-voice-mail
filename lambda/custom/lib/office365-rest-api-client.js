@@ -20,7 +20,6 @@ function countUnreadMessages() {
                 .top(25)
                 .filter('isRead eq false')
                 .count(true)
-                .select('odata.count')
                 .get()
                 .then(
                     (res) => { resolve(res.value.length); }
@@ -68,7 +67,6 @@ function countMessagesPerDay(date) {
                 .top(25)
                 .filter('receivedDateTime ge ' + dateUTCISOString + ' and receivedDateTime lt ' + nextUTCISOString)
                 .count(true)
-                .select('odata.count')
                 .get()
                 .then(
                     (res) => {
